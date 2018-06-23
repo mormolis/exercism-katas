@@ -1,24 +1,18 @@
-import java.util.ArrayList;
-import java.util.List;
-
 class LargestSeriesProductCalculator {
 
     private String inputNumber;
-    private List<Integer> numbers;
 
     LargestSeriesProductCalculator(String inputNumber) {
-        this.numbers = new ArrayList<>();
         this.inputNumber = inputNumber;
-        convertString();
     }
 
     long calculateLargestProductForSeriesLength(int numberOfDigits) {
         checkForExceptions(numberOfDigits);
         long max = Long.MIN_VALUE;
         long product = 1;
-        for (int i=0; i <= numbers.size() - numberOfDigits; i++){
+        for (int i=0; i <= inputNumber.length() - numberOfDigits; i++){
             for (int j = i; j < i + numberOfDigits; j++ ){
-                product*=numbers.get(j);
+                product*=numberAt(j);
             }
             if (product > max) {
                 max = product;
@@ -33,10 +27,9 @@ class LargestSeriesProductCalculator {
         if (numberOfDigits < 0) throw new IllegalArgumentException("Series length must be non-negative.");
     }
 
-    private void convertString(){
-        for(int i = 0; i < inputNumber.length(); i++){
-            numbers.add(convertCharachter(String.valueOf(inputNumber.charAt(i))));
-        }
+
+    private int numberAt(int position){
+        return convertCharachter(String.valueOf(inputNumber.charAt(position)));
     }
 
     private int convertCharachter(String string){
