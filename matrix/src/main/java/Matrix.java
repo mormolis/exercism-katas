@@ -1,48 +1,60 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class Matrix {
 
     private String matrixAsString;
-    private int[][] matrix;
+    private List<List<Integer>> matrix;
 
     Matrix(String matrixAsString) {
         this.matrixAsString = matrixAsString;
+        this.matrix = new ArrayList<>();
         createMatrix();
     }
 
     int[] getRow(int rowNumber) {
-        return matrix[rowNumber];
+        List<Integer> toConvert = matrix.get(rowNumber);
+        int[] toReturn = new int[toConvert.size()];
+        for(int i = 0; i < toConvert.size(); i++) {
+            toReturn[i] = toConvert.get(i);
+        }
+        return toReturn;
     }
 
     int[] getColumn(int columnNumber) {
-        int [] columnToReturn = new int[matrix[columnNumber].length];
-        for (int row = 0; row < matrix.length; row++){
-            columnToReturn[row] = matrix[row][columnNumber];
+        int size = matrix.size();
+        int [] columnToReturn = new int[size];
+        for (int row = 0; row < size; row++){
+            columnToReturn[row] = matrix.get(row).get(columnNumber);
         }
         return columnToReturn;
     }
 
     int getRowsCount() {
-        return matrix.length;
+        return matrix.size();
     }
 
     int getColumnsCount() {
-        return matrix[0].length;
+        return matrix.get(0).size();
     }
 
     private void createMatrix(){
         String [] iMatrix = matrixAsString.split("\n");
-        String [][] tempMatrix = new String [iMatrix.length][iMatrix[0].split(" ").length];
+        List<List<String>> tempMatrix = new ArrayList<>();
+
         for (int i = 0; i < iMatrix.length; i++){
-            tempMatrix[i] = iMatrix[i].split(" ");
+            tempMatrix.add(Arrays.asList(iMatrix[i].split(" ")));
         }
 
-        this.matrix = new int [tempMatrix.length][tempMatrix[0].length];
-
-        for (int i=0; i< tempMatrix.length; i++){
-            for(int j=0; j< tempMatrix[0].length; j++){
-                this.matrix[i][j] = numberFromString(tempMatrix[i][j]);
+        for(List<String> row : tempMatrix){
+            List<Integer> matrixRow = new ArrayList<>();
+            for(String string : row){
+                matrixRow.add(numberFromString(string));
             }
+            matrix.add(matrixRow);
         }
+
     }
 
     private int numberFromString(String string){
